@@ -4,47 +4,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visual English Quiz</title>
+    <title>English VocaMaster Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Montserrat:wght@700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
     <div id="app">
-        <!-- Main Quiz View -->
-        <main class="quiz-view">
-            <header class="quiz-header">
-                <div class="score-badge">Score: <span id="current-score">0</span></div>
-                <div class="progress-bar-container">
-                    <div id="progress-fill" class="progress-fill"></div>
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">Voca<span>Pro</span></div>
+            <nav>
+                <button onclick="app.switchScreen('home')" class="nav-item active" data-screen="home">
+                    <i class="fas fa-home"></i> Dashboard
+                </button>
+                <button onclick="app.switchScreen('study')" class="nav-item" data-screen="study">
+                    <i class="fas fa-book-open"></i> Learning
+                </button>
+                <button onclick="app.switchScreen('quiz')" class="nav-item" data-screen="quiz">
+                    <i class="fas fa-graduation-cap"></i> Quiz
+                </button>
+                <button onclick="app.switchScreen('manager')" class="nav-item" data-screen="manager">
+                    <i class="fas fa-list-check"></i> Manage Words
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="music-toggle" class="music-btn" onclick="app.toggleMusic()">
+                    <i class="fas fa-music"></i> <span>Classical BGM</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <!-- Screen: Home/Dashboard -->
+            <section id="home" class="screen active">
+                <header class="content-header">
+                    <h1>Dashboard</h1>
+                    <div class="user-stats">
+                        <div class="xp-bar-container">
+                            <div class="xp-info">Level <span id="user-level">1</span> <span class="xp-text"><span
+                                        id="current-xp">0</span> / <span id="next-level-xp">100</span> XP</span></div>
+                            <div class="xp-bar">
+                                <div id="xp-fill" class="xp-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-check-double"></i>
+                        <div class="stat-content">
+                            <h3>Total Progress</h3>
+                            <p><span id="stats-total-words">0</span> / 2,000 Words</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-fire"></i>
+                        <div class="stat-content">
+                            <h3>Quiz Score</h3>
+                            <p><span id="stats-avg-score">0</span>% Accuracy</p>
+                        </div>
+                    </div>
                 </div>
-            </header>
-
-            <div class="question-container">
-                <div class="image-frame">
-                    <img id="quiz-image" src="" alt="Quiz Image">
-                    <div id="feedback-overlay" class="feedback-overlay"></div>
+                <div class="quick-actions">
+                    <button class="action-card study" onclick="app.switchScreen('study')">
+                        <h2>Start Learning</h2>
+                        <p>Flashcards with images & TTS</p>
+                    </button>
+                    <button class="action-card quiz" onclick="app.switchScreen('quiz')">
+                        <h2>Quick Quiz</h2>
+                        <p>10 random visual questions</p>
+                    </button>
                 </div>
+            </section>
 
-                <p class="question-prompt">그림에 맞는 영단어를 고르세요 (1,2,3,4)</p>
+            <!-- Screen: Study (Flashcards) -->
+            <section id="study" class="screen">
+                <div class="study-layout">
+                    <div class="card-viewer">
+                        <div class="flashcard-pro" onclick="this.classList.toggle('flipped')">
+                            <div class="card-faces">
+                                <div class="face front">
+                                    <div class="visual-container">
+                                        <img id="study-image" src="" alt="word visual">
+                                    </div>
+                                    <h2 id="study-word-en">Word</h2>
+                                    <p id="study-pron" class="pron"></p>
+                                    <button class="tts-icon" onclick="app.speakWord(event)"><i
+                                            class="fas fa-volume-up"></i></button>
+                                </div>
+                                <div class="face back">
+                                    <div class="pair-view">
+                                        <div class="pair-item">
+                                            <span class="label">English</span>
+                                            <h3 id="study-word-en-back">Word</h3>
+                                        </div>
+                                        <div class="pair-divider"></div>
+                                        <div class="pair-item">
+                                            <span class="label">Korean</span>
+                                            <h3 id="study-meaning-ko">의미</h3>
+                                        </div>
+                                    </div>
+                                    <div class="example-box">
+                                        <p id="study-example">Example sentence comes here...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="study-nav">
+                            <button class="btn-nav" onclick="app.prevWord()"><i
+                                    class="fas fa-chevron-left"></i></button>
+                            <span id="study-counter">1 / 2000</span>
+                            <button class="btn-nav" onclick="app.nextWord()"><i
+                                    class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                <div class="options-grid" id="options-grid">
-                    <!-- Buttons will be injected here -->
+            <!-- Screen: Quiz -->
+            <section id="quiz" class="screen">
+                <div class="quiz-pro-container">
+                    <div class="quiz-header-alt">
+                        <div class="score-points">+<span id="quiz-xp-gain">0</span> XP</div>
+                        <div class="quiz-progress-mini">
+                            <div id="quiz-progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="quiz-card-alt">
+                        <div class="quiz-image-frame">
+                            <img id="quiz-image" src="" alt="quiz image">
+                            <div id="feedback-overlay" class="feedback-overlay"></div>
+                        </div>
+                        <div class="quiz-options" id="quiz-options">
+                            <!-- Buttons -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen: Manager -->
+            <section id="manager" class="screen">
+                <div class="manager-header">
+                    <h2>Word Manager</h2>
+                    <button class="btn-add" onclick="app.openAddModal()"><i class="fas fa-plus"></i> Add New
+                        Word</button>
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="word-search" placeholder="Search words or meanings..."
+                        oninput="app.filterWords()">
+                </div>
+                <div class="word-table-container">
+                    <table class="word-table">
+                        <thead>
+                            <tr>
+                                <th>Word</th>
+                                <th>Meaning</th>
+                                <th>Pronunciation</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="word-list-body">
+                            <!-- Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <div id="word-modal" class="modal">
+            <div class="modal-content">
+                <h3 id="modal-title">Add Word</h3>
+                <div class="form-group">
+                    <label>English Word</label>
+                    <input type="text" id="input-word">
+                </div>
+                <div class="form-group">
+                    <label>Korean Meaning</label>
+                    <input type="text" id="input-meaning">
+                </div>
+                <div class="form-group">
+                    <label>Pronunciation (Optional)</label>
+                    <input type="text" id="input-pron">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-cancel" onclick="app.closeModal()">Cancel</button>
+                    <button class="btn-save" onclick="app.saveWord()">Save</button>
                 </div>
             </div>
-
-            <footer class="quiz-footer">
-                <button id="music-toggle" class="icon-btn" onclick="app.toggleMusic()">
-                    <i class="fas fa-music"></i>
-                </button>
-            </footer>
-        </main>
+        </div>
     </div>
 
     <!-- Background Music -->
     <audio id="bgm" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        <!-- A calm classical Mozart piano track -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
     </audio>
 
     <script src="vocabulary.js"></script>
