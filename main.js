@@ -1,6 +1,14 @@
 class VocaMasterPro {
     constructor() {
-        this.words = JSON.parse(localStorage.getItem('voca_words')) || VOCABULARY;
+        const storedWords = JSON.parse(localStorage.getItem('voca_words'));
+        // If stored words contain placeholders (Word_), clear and use VOCABULARY
+        if (storedWords && storedWords.some(w => w.word.startsWith('Word_'))) {
+            localStorage.removeItem('voca_words');
+            this.words = VOCABULARY;
+        } else {
+            this.words = storedWords || VOCABULARY;
+        }
+
         this.xp = parseInt(localStorage.getItem('voca_xp')) || 0;
         this.level = this.calculateLevel(this.xp);
         this.currentWordIdx = 0;
