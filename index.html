@@ -1,98 +1,45 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English VocaMaster 2000</title>
+    <title>Visual English Quiz</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div id="app">
-        <!-- Landing Page -->
-        <section id="landing" class="screen active">
-            <div class="glass-container">
-                <h1 class="glow-text">English VocaMaster</h1>
-                <p class="subtitle">중학교 필수 영단어 2,000 정복하기</p>
-                <div class="stats-overview">
-                    <div class="stat-item">
-                        <span class="stat-value">2,000</span>
-                        <span class="stat-label">Words</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value">Visual</span>
-                        <span class="stat-label">Learning</span>
-                    </div>
+        <!-- Main Quiz View -->
+        <main class="quiz-view">
+            <header class="quiz-header">
+                <div class="score-badge">Score: <span id="current-score">0</span></div>
+                <div class="progress-bar-container">
+                    <div id="progress-fill" class="progress-fill"></div>
                 </div>
-                <div class="btn-group">
-                    <button class="btn btn-primary" onclick="app.startStudy()">
-                        <i class="fas fa-book-open"></i> 학습 시작하기
-                    </button>
-                    <button class="btn btn-secondary" onclick="app.startQuiz()">
-                        <i class="fas fa-graduation-cap"></i> 퀴즈 도전하기
-                    </button>
-                </div>
-            </div>
-        </section>
+            </header>
 
-        <!-- Study Mode -->
-        <section id="study" class="screen">
-            <nav class="top-nav">
-                <button class="back-btn" onclick="app.goHome()"><i class="fas fa-arrow-left"></i> Home</button>
-                <div class="progress-info">
-                    <span id="study-progress">1 / 2000</span>
+            <div class="question-container">
+                <div class="image-frame">
+                    <img id="quiz-image" src="" alt="Quiz Image">
+                    <div id="feedback-overlay" class="feedback-overlay"></div>
                 </div>
-            </nav>
-            <div class="study-card-container">
-                <div class="flashcard" id="flashcard" onclick="this.classList.toggle('flipped')">
-                    <div class="card-front">
-                        <div class="word-image-container">
-                            <img id="word-image" src="" alt="word image">
-                        </div>
-                        <h2 id="study-word">Loading...</h2>
-                        <button class="tts-btn" onclick="app.speakWord(event)"><i class="fas fa-volume-up"></i></button>
-                    </div>
-                    <div class="card-back">
-                        <p class="pronunciation" id="study-pron"></p>
-                        <h3 id="study-meaning">의미</h3>
-                        <p class="example" id="study-example"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="nav-btns">
-                <button class="nav-btn prev" onclick="app.prevWord()"><i class="fas fa-chevron-left"></i> Previous</button>
-                <button class="nav-btn next" onclick="app.nextWord()">Next <i class="fas fa-chevron-right"></i></button>
-            </div>
-        </section>
 
-        <!-- Quiz Mode -->
-        <section id="quiz" class="screen">
-            <nav class="top-nav">
-                <button class="back-btn" onclick="app.goHome()"><i class="fas fa-arrow-left"></i> Stop</button>
-                <div class="quiz-progress-bar">
-                    <div id="quiz-progress-inner"></div>
-                </div>
-                <div class="quiz-score">Score: <span id="current-score">0</span></div>
-            </nav>
-            <div class="quiz-container">
-                <div class="quiz-question-card">
-                    <div class="question-image">
-                        <img id="quiz-image" src="" alt="quiz image">
-                    </div>
-                    <h2 id="quiz-word">Word</h2>
-                    <button class="tts-btn" onclick="app.speakQuizWord()"><i class="fas fa-volume-up"></i></button>
-                </div>
+                <p class="question-prompt">그림에 맞는 영단어를 고르세요 (1,2,3,4)</p>
+
                 <div class="options-grid" id="options-grid">
-                    <!-- Options buttons will be injected here -->
+                    <!-- Buttons will be injected here -->
                 </div>
             </div>
-        </section>
 
-        <!-- Music Toggle -->
-        <button id="music-toggle" class="music-toggle" onclick="app.toggleMusic()">
-            <i class="fas fa-music"></i>
-        </button>
+            <footer class="quiz-footer">
+                <button id="music-toggle" class="icon-btn" onclick="app.toggleMusic()">
+                    <i class="fas fa-music"></i>
+                </button>
+            </footer>
+        </main>
     </div>
 
     <!-- Background Music -->
@@ -103,4 +50,5 @@
     <script src="vocabulary.js"></script>
     <script src="main.js"></script>
 </body>
+
 </html>
